@@ -101,67 +101,48 @@ TreeNode *minimum(TreeNode *x)
 
 void removeNode(TreeMap *tree, TreeNode *node)
 {
-    // Si el nodo no existe no ocurre nada
-    if (node == NULL)
+    if (tree == NULL || node == NULL)
         return;
 
-    // CASO 1: EL NODO NO TIENE HIJOS
+    TreeNode *padre = node->parent;
+
+    // Caso 1: nodo sin hijos
     if (node->left == NULL && node->right == NULL)
     {
-        // Si el padre es NULL estamos en la raiz
-        if (node->parent == NULL)
-        {
+        if (padre == NULL)
             tree->root = NULL;
-        }
-        // Si no estamos en la raiz tenemos que identificar si es hijo izq. o der.
-        // El nodo actual (node) es el hijo izquierdo de su padre (parent)?
-        else if (node->parent->left == node)
-        {
-            node->parent->left = NULL;
-        }
-        // Aqui estamos cuando el nodo sea el hijo derecho
+        else if (padre->left == node)
+            padre->left = NULL;
         else
-        {
-            node->parent->right = NULL;
-        }
+            padre->right = NULL;
+
         free(node->pair);
         free(node);
     }
-    // CASO 2: EL NODO TIENE UN SOLO HIJO
-    else if ((node->left == NULL && node->right != NULL) || (node->left != NULL && node->right == NULL))
+    // Caso 2: nodo con un solo hijo
+    else if ((node->left == NULL) != (node->right == NULL)) // solo uno no es NULL
     {
-        TreeNode *child = (node->left != NULL) ? node->left : node->right;
+        TreeNode *hijo = (node->left != NULL) ? node->left : node->right;
 
-        // Si estamos en la raiz
-        if (node->parent == node)
-        {
-            tree->root = child;
-            child->parent = NULL;
-            // la raiz del arbol ahora sera el hijo que encontramos
-            // y ahora a este child su padre lo dejamos en NULL, porque es la nueva raizzz
-        }
-        else if (node->parent->left == node)
-        {
-            node->parent->left = child;
-            child->parent = node->parent;
-        }
+        if (hijo != NULL)
+            hijo->parent = padre;
+
+        if (padre == NULL)
+            tree->root = hijo;
+        else if (padre->left == node)
+            padre->left = hijo;
         else
-        {
-            node->parent->right = child;
-            child->parent = node->parent;
-        }
+            padre->right = hijo;
+
         free(node->pair);
         free(node);
     }
-
-    // CASO 3: NODO CON DOS HIJOS
+    // Caso 3: nodo con dos hijos
     else
     {
-        TreeNode *min = minimum(node->right); // Buscamos el sucesor inmediato!!!
-
-        node->pair->key = min->pair->key;
-        node->pair->value = min->pair->value;
-        removeNode(tree, min);
+        TreeNode *siguiente = minimum(node->right);
+        node->pair = siguiente->pair;
+        removeNode(tree, siguiente);
     }
 }
 
