@@ -86,6 +86,7 @@ void insertTreeMap(TreeMap *tree, void *key, void *value)
         padre->right = newNode;
 
     tree->current = newNode;
+    return;
 }
 
 TreeNode *minimum(TreeNode *x)
