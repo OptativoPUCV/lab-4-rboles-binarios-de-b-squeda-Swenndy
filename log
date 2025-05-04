@@ -5,3 +5,12 @@ test.c:506:9: error: variable 'all_correct' set but not used [-Werror,-Wunused-b
         ^
 1 error generated.
 f63ac8e
+Sun May  4 17:52:25 -04 2025: 
+ treemap.c | 115 +++++++++++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 72 insertions(+), 43 deletions(-)
+Compilation failed
+test.c:506:9: error: variable 'all_correct' set but not used [-Werror,-Wunused-but-set-variable]
+    int all_correct=1;
+        ^
+1 error generated.
+df138cf
