@@ -115,3 +115,20 @@ Sun May  4 19:18:04 -04 2025:
  1 file changed, 2 insertions(+), 1 deletion(-)
  tests:  0|0
 0689ba8
+Sun May  4 19:20:52 -04 2025: 
+ treemap.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+Compilation failed
+In file included from test.c:4:
+./treemap.c:60:1: error: unknown type name 'PPair'; did you mean 'Pair'?
+PPair *searchTreeMap(TreeMap *tree, void *key)
+^~~~~
+Pair
+./treemap.h:9:3: note: 'Pair' declared here
+} Pair;
+  ^
+test.c:506:9: warning: variable 'all_correct' set but not used [-Wunused-but-set-variable]
+    int all_correct=1;
+        ^
+1 warning and 1 error generated.
+f1f6450

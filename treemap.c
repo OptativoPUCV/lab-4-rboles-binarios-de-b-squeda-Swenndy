@@ -57,27 +57,26 @@ TreeMap *createTreeMap(int (*lower_than)(void *key1, void *key2))
     return mapa;
 }
 
-Pair *searchTreeMap(TreeMap *tree, void *key)
+PPair *searchTreeMap(TreeMap *tree, void *key)
 {
-    if (tree == NULL || tree->root == NULL)
-        return NULL;
-
     TreeNode *aux = tree->root;
+
     while (aux != NULL)
     {
-        if (is_equal(tree, key, aux->pair->key))
+        if (is_equal(tree, aux->pair->key, key))
         {
             tree->current = aux;
             return aux->pair;
         }
-
         if (tree->lower_than(key, aux->pair->key))
+        {
             aux = aux->left;
+        }
         else
+        {
             aux = aux->right;
+        }
     }
-
-    tree->current = NULL;
     return NULL;
 }
 
