@@ -210,13 +210,12 @@ Pair *upperBound(TreeMap *tree, void *key)
 
 Pair *firstTreeMap(TreeMap *tree)
 {
-    if (tree->root == NULL)
-    {
+    if (tree == NULL || tree->root == NULL)
         return NULL;
-    }
-    TreeNode *min = minimum(tree->root);
-    tree->current = min;
-    return tree->current->pair;
+
+    TreeNode *minimo = minimum(tree->root);
+    tree->current = minimo;
+    return (minimo != NULL) ? minimo->pair : NULL;
 }
 
 Pair *nextTreeMap(TreeMap *tree)
