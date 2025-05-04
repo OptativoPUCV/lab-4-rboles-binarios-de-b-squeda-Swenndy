@@ -23,3 +23,16 @@ test.c:506:9: error: variable 'all_correct' set but not used [-Werror,-Wunused-b
         ^
 1 error generated.
 ba20bee
+Sun May  4 18:23:21 -04 2025: 
+ treemap.c | 166 +++++++++++++++++++-------------------------------------------
+ 1 file changed, 51 insertions(+), 115 deletions(-)
+Compilation failed
+In file included from test.c:4:
+./treemap.c:115:5: error: void function 'removeNode' should not return a value [-Wreturn-type]
+    return NULL;
+    ^      ~~~~
+test.c:506:9: error: variable 'all_correct' set but not used [-Werror,-Wunused-but-set-variable]
+    int all_correct=1;
+        ^
+2 errors generated.
+e196ab7
