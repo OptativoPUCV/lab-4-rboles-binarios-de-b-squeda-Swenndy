@@ -106,12 +106,79 @@ void insertTreeMap(TreeMap *tree, void *key, void *value)
 
 TreeNode *minimum(TreeNode *x)
 {
-
-    return NULL;
+    if (x == NULL)
+        return NULL;
+    while (x->left != NULL)
+    {
+        x = x->left;
+    }
+    return x;
 }
 
 void removeNode(TreeMap *tree, TreeNode *node)
 {
+    // Si el nodo no existe no ocurre nada
+    if (node == NULL)
+        return;
+
+    // CASO 1: EL NODO NO TIENE HIJOS
+    if (node->left == NULL && node->right == NULL)
+    {
+        // Si el padre es NULL estamos en la raiz
+        if (node->parent == NULL)
+        {
+            tree->root = NULL;
+        }
+        // Si no estamos en la raiz tenemos que identificar si es hijo izq. o der.
+        // El nodo actual (node) es el hijo izquierdo de su padre (parent)?
+        else if (node->parent->left == node)
+        {
+            node->parent->left = NULL;
+        }
+        // Aqui estamos cuando el nodo sea el hijo derecho
+        else
+        {
+            node->parent->right = NULL;
+        }
+        free(node->pair);
+        free(node);
+    }
+    // CASO 2: EL NODO TIENE UN SOLO HIJO
+    else if ((node->left == NULL && node->right != NULL) || (node->left != NULL && node->right == NULL))
+    {
+        TreeNode *child = (node->left != NULL) ? node->left : node->right;
+
+        // Si estamos en la raiz
+        if (node->parent == node)
+        {
+            tree->root = child;
+            child->parent = NULL;
+            // la raiz del arbol ahora sera el hijo que encontramos
+            // y ahora a este child su padre lo dejamos en NULL, porque es la nueva raizzz
+        }
+        else if (node->parent->left == node)
+        {
+            node->parent->left = child;
+            child->parent = node->parent;
+        }
+        else
+        {
+            node->parent->right = child;
+            child->parent = node->parent;
+        }
+        free(node->pair);
+        free(node);
+    }
+
+    // CASO 3: NODO CON DOS HIJOS
+    else
+    {
+        TreeNode *min = minimum(node->right); // Buscamos el sucesor inmediato!!!
+
+        node->pair->key = min->pair->key;
+        node->pair->value = min->pair->value;
+        removeNode(tree, min);
+    }
 }
 
 void eraseTreeMap(TreeMap *tree, void *key)
@@ -150,15 +217,75 @@ Pair *searchTreeMap(TreeMap *tree, void *key)
 
 Pair *upperBound(TreeMap *tree, void *key)
 {
+    if (tree->root == NULL)
+    {
+        return NULL;
+    }
+
+    Pair *aux = searchTreeMap(tree, key);
+    if (aux != NULL)
+    {
+        return aux;
+    }
+
+    TreeNode *current = tree->root;
+    TreeNode *candidate = NULL;
+
+    while (current != NULL)
+    {
+        if (!tree->lower_than(current->pair->key, key))
+        {
+            candidate = current;
+            current = current->left;
+        }
+        else
+        {
+
+            current = current->right;
+        }
+    }
+
+    if (candidate != NULL)
+    {
+        tree->current = candidate;
+        return candidate->pair;
+    }
+
     return NULL;
 }
 
 Pair *firstTreeMap(TreeMap *tree)
 {
-    return NULL;
+    if (tree->root == NULL)
+    {
+        return NULL;
+    }
+    TreeNode *min = minimum(tree->root);
+    tree->current = min;
+    return tree->current->pair;
 }
 
 Pair *nextTreeMap(TreeMap *tree)
 {
-    return NULL;
+    if (tree->current->right != NULL)
+    {
+        TreeNode *next = minimum(tree->current->right);
+        tree->current = next;
+        return next->pair;
+    }
+    else
+    {
+
+        TreeNode *aux = tree->current;
+        while (aux->parent != NULL && aux == aux->parent->right)
+        {
+            aux = aux->parent;
+        }
+
+        if (aux->parent == NULL)
+            return NULL;
+
+        tree->current = aux->parent;
+        return tree->current->pair;
+    }
 }
