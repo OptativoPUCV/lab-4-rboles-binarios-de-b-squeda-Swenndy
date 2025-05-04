@@ -40,7 +40,9 @@ TreeNode *createTreeNode(void *key, void *value)
     new->parent = new->left = new->right = NULL;
     return new;
 }
-
+// Crea un nuevo mapa de arbol con una clave y un valor
+// y devuelve un puntero a la estructura TreeMap
+// Si no se puede crear el mapa, devuelve NULL
 TreeMap *createTreeMap(int (*lower_than)(void *key1, void *key2))
 {
     TreeMap *mapa = (TreeMap *)malloc(sizeof(TreeMap));
