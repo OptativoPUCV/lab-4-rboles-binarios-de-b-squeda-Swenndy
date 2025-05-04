@@ -109,7 +109,7 @@ void removeNode(TreeMap *tree, TreeNode *node)
     // Caso 1: nodo sin hijos
     if (node->left == NULL && node->right == NULL)
     {
-        if (padre == NULL)
+        if (padre == NULL) // El nodo es la raíz
             tree->root = NULL;
         else if (padre->left == node)
             padre->left = NULL;
@@ -120,19 +120,18 @@ void removeNode(TreeMap *tree, TreeNode *node)
         free(node);
     }
     // Caso 2: nodo con un solo hijo
-    else if ((node->left == NULL) != (node->right == NULL)) // solo uno no es NULL
+    else if (node->left == NULL || node->right == NULL) // Solo uno de los hijos es NULL
     {
         TreeNode *hijo = (node->left != NULL) ? node->left : node->right;
 
-        if (hijo != NULL)
-            hijo->parent = padre;
-
-        if (padre == NULL)
+        if (padre == NULL) // El nodo es la raíz
             tree->root = hijo;
         else if (padre->left == node)
             padre->left = hijo;
         else
             padre->right = hijo;
+
+        hijo->parent = padre;
 
         free(node->pair);
         free(node);
@@ -140,9 +139,10 @@ void removeNode(TreeMap *tree, TreeNode *node)
     // Caso 3: nodo con dos hijos
     else
     {
-        TreeNode *siguiente = minimum(node->right);
-        node->pair = siguiente->pair;
-        removeNode(tree, siguiente);
+        TreeNode *siguiente = minimum(node->right); // Encuentra el sucesor
+        node->pair->key = siguiente->pair->key;     // Copia la clave del sucesor
+        node->pair->value = siguiente->pair->value; // Copia el valor del sucesor
+        removeNode(tree, siguiente);                // Elimina el sucesor
     }
 }
 
