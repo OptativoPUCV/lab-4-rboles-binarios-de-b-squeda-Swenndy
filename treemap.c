@@ -54,17 +54,19 @@ TreeMap *createTreeMap(int (*lower_than)(void *key1, void *key2))
     mapa->lower_than = lower_than;
     return mapa;
 }
+// Se inserta un nuevo nodo en el mapa de arbol
 void insertTreeMap(TreeMap *tree, void *key, void *value)
 {
     if (tree == NULL)
         return;
-
+    // Si el mapa de arbol ya tiene un nodo con la misma clave, no se inserta
+    // y se devuelve sin hacer nada
     if (searchTreeMap(tree, key) != NULL)
         return;
 
     TreeNode *padre = NULL;
     TreeNode *aux = tree->root;
-
+    // Se busca el lugar donde se debe insertar el nuevo nodo
     while (aux != NULL)
     {
         padre = aux;
