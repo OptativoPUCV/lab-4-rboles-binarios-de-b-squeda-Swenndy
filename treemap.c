@@ -75,7 +75,8 @@ void insertTreeMap(TreeMap *tree, void *key, void *value)
         else
             aux = aux->right;
     }
-
+    // Se crea el nuevo nodo
+    // y se asigna su padre
     TreeNode *newNode = createTreeNode(key, value);
     if (newNode == NULL)
         return;
@@ -92,6 +93,8 @@ void insertTreeMap(TreeMap *tree, void *key, void *value)
     tree->current = newNode;
 }
 
+// Se busca el nodo con la clave menor en el mapa de arbol
+// y se devuelve un puntero
 TreeNode *minimum(TreeNode *x)
 {
     if (x == NULL)
